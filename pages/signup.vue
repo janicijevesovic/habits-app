@@ -27,8 +27,8 @@
 					Sign Up
 				</button>
 
-				<p class="mt-4 text-center text-red-500">
-					<!--Error Feedback-->
+				<p v-if="authStore.signupError" class="mt-4 text-center text-red-500">
+					{{ authStore.signupError }}
 				</p>
 			</form>
 		</div>
@@ -38,8 +38,9 @@
 <script setup lang="ts">
 const email = ref('');
 const password = ref('');
+const authStore = useAuthStore();
 
 const handleSignup = async () => {
-	console.log(email.value, password.value);
+	await authStore.signup(email.value, password.value);
 };
 </script>

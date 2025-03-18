@@ -5,6 +5,12 @@
 		<nuxt-link to="/">
 			<h1 class="text-xl font-semibold">Habit Tracker</h1>
 		</nuxt-link>
+
+		<div class="flex items-center space-x-4">
+			<button @click="handleLogout" class="px-3 py-1 text-black bg-gray-100">
+				Logout
+			</button>
+		</div>
 		<div>
 			<div class="space-x-4">
 				<nuxt-link to="/login" class="hover:underline">Login</nuxt-link>
@@ -14,4 +20,10 @@
 	</header>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const authStore = useAuthStore();
+
+const handleLogout = async () => {
+	await authStore.logout();
+};
+</script>
