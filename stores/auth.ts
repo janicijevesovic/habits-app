@@ -1,5 +1,10 @@
 import { FirebaseError } from 'firebase/app';
-import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import {
+	createUserWithEmailAndPassword,
+	onAuthStateChanged,
+	signInWithEmailAndPassword,
+	signOut,
+} from 'firebase/auth';
 import { defineStore } from 'pinia';
 import type { AuthState } from '~/interfaces/Auth';
 
@@ -11,6 +16,18 @@ export const useAuthStore = defineStore('authStore', {
 	}),
 
 	actions: {
+		// Realtime
+		setupAuthListener() {
+			const { $auth } = useNuxtApp();
+			if ($auth) {
+				onAuthStateChanged($auth, (user) => {
+					this.user = user;
+					console.log('User State Changed:', this.user);
+				});
+			} else {
+				console.log('Firebase auth is not initialized!');
+			}
+		},
 		// Signup
 		async signup(email: string, password: string) {
 			const { $auth } = useNuxtApp();
@@ -23,7 +40,6 @@ export const useAuthStore = defineStore('authStore', {
 					email,
 					password
 				);
-				this.user = credentials.user;
 			} catch (error) {
 				if (error instanceof FirebaseError) {
 					this.signupError = error.message;
@@ -35,8 +51,24 @@ export const useAuthStore = defineStore('authStore', {
 			const { $auth } = useNuxtApp();
 
 			await signOut($auth);
-			this.user = null;
 		},
 		// Login
+		async login(email: string, password: string) {
+			const { $auth } = useNuxtApp();
+
+			this.loginError = null;
+
+			try {
+				const credentials = await signInWithEmailAndPassword(
+					$auth,
+					email,
+					password
+				);
+			} catch (error) {
+				if (error instanceof FirebaseError) {
+					this.loginError = error.message;
+				}
+			}
+		},
 	},
 });

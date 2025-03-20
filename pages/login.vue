@@ -27,8 +27,8 @@
 					Log In
 				</button>
 
-				<p class="mt-4 text-center text-red-500">
-					<!--Error Feedback-->
+				<p v-if="authStore.loginError" class="mt-4 text-center text-red-500">
+					{{ authStore.loginError }}
 				</p>
 			</form>
 		</div>
@@ -38,8 +38,9 @@
 <script setup lang="ts">
 const email = ref('');
 const password = ref('');
+const authStore = useAuthStore();
 
 const handleLogin = async () => {
-	console.log(email.value, password.value);
+	await authStore.login(email.value, password.value);
 };
 </script>

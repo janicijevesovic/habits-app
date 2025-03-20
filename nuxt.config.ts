@@ -13,4 +13,5 @@ export default defineNuxtConfig({
 			FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
 		},
 	},
+	plugins: ['@/plugins/firebase.client.ts', '@/plugins/authSetup.client.ts'],
 });
