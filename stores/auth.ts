@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('authStore', {
 		user: null,
 		loginError: null,
 		signupError: null,
+		initialAuthValueReady: false,
 	}),
 
 	actions: {
@@ -22,6 +23,7 @@ export const useAuthStore = defineStore('authStore', {
 			if ($auth) {
 				onAuthStateChanged($auth, (user) => {
 					this.user = user;
+					this.initialAuthValueReady = true;
 					console.log('User State Changed:', this.user);
 				});
 			} else {

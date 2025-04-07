@@ -7,5 +7,12 @@
 
 <script setup lang="ts">
 const habitStore = useHabitStore();
-habitStore.fetchHabits();
+
+onMounted(async () => {
+	habitStore.fetchHabits();
+});
+
+definePageMeta({
+	middleware: ['auth'],
+});
 </script>
